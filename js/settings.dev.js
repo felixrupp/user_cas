@@ -8,10 +8,12 @@ $(document).ready(function () {
         if ($(this).is(':checked')) {
 
             $("#user_cas #cas_disable_logout").attr("disabled", false);
+            document.getElementById("cas_redirect_after_logout").disabled = false;
         }
         else {
 
             $("#user_cas #cas_disable_logout").attr("disabled", true);
+            document.getElementById("cas_redirect_after_logout").disabled = true;
         }
     });
 

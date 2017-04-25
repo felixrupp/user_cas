@@ -109,6 +109,11 @@ class AppService
     private $casServiceUrl;
 
     /**
+     * @var string
+     */
+    private $casRedirectAfterLogout;
+
+    /**
      * UserService constructor.
      * @param $appName
      * @param \OCP\IConfig $config
@@ -145,6 +150,7 @@ class AppService
         $this->casDebugFile = $this->config->getAppValue('user_cas', 'cas_debug_file', '');
         $this->casCertPath = $this->config->getAppValue('user_cas', 'cas_cert_path', '');
         $this->casServiceUrl = $this->config->getAppValue('user_cas', 'cas_service_url', '');
+        $this->casRedirectAfterLogout = $this->config->getAppValue('user_cas', 'cas_redirect_after_logout', '');
 
         if (!class_exists('\\phpCAS')) {
 
@@ -197,7 +203,6 @@ class AppService
      */
     public function registerBackend()
     {
-
         $this->userManager->registerBackend($this->backend);
     }
 

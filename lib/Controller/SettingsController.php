@@ -46,7 +46,7 @@ class SettingsController extends Controller
 
     private $params = array('cas_server_version', 'cas_server_hostname', 'cas_server_port', 'cas_server_path', 'cas_force_login', 'cas_autocreate',
         'cas_update_user_data', 'cas_protected_groups', 'cas_default_group', 'cas_email_mapping', 'cas_displayName_mapping', 'cas_group_mapping',
-        'cas_cert_path', 'cas_debug_file', 'cas_php_cas_path', 'cas_link_to_ldap_backend', 'cas_disable_logout', 'cas_service_url');
+        'cas_cert_path', 'cas_debug_file', 'cas_php_cas_path', 'cas_link_to_ldap_backend', 'cas_disable_logout', 'cas_service_url','cas_redirect_after_logout');
 
     protected $appName;
 
@@ -80,11 +80,13 @@ class SettingsController extends Controller
      * @param null $cas_update_user_data
      * @param null $cas_link_to_ldap_backend
      * @param null $cas_disable_logout
+     * @param null $cas_redirect_after_logout
      * @return mixed
      */
     public function saveSettings($cas_server_version, $cas_server_hostname, $cas_server_port, $cas_server_path, $cas_protected_groups, $cas_default_group,
                                  $cas_email_mapping, $cas_displayName_mapping, $cas_group_mapping, $cas_cert_path, $cas_debug_file, $cas_php_cas_path, $cas_service_url,
-                                 $cas_force_login = NULL, $cas_autocreate = NULL, $cas_update_user_data = NULL, $cas_link_to_ldap_backend = NULL, $cas_disable_logout = NULL)
+                                 $cas_force_login = NULL, $cas_autocreate = NULL, $cas_update_user_data = NULL, $cas_link_to_ldap_backend = NULL, $cas_disable_logout = NULL,
+                                 $cas_redirect_after_logout = NULL)
     {
 
         try {
@@ -111,7 +113,7 @@ class SettingsController extends Controller
             $this->config->setAppValue($this->appName, 'cas_update_user_data', ($cas_update_user_data !== NULL) ? 'true' : 'false');
             $this->config->setAppValue($this->appName, 'cas_link_to_ldap_backend', ($cas_link_to_ldap_backend !== NULL) ? 'true' : 'false');
             $this->config->setAppValue($this->appName, 'cas_disable_logout', ($cas_disable_logout !== NULL) ? 'true' : 'false');
-
+            $this->config->setAppValue($this->appName, 'cas_redirect_after_logout',$cas_redirect_after_logout);
 
             return array(
                 'code' => 200,

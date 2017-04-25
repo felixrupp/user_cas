@@ -47,7 +47,11 @@ CAS Server
 Basic
 -----
 
-<!-- **Disable CAS logout**: If checked, you will only be logged out from owncloud and not from your CAS instance. -->
+**Force user login using CAS?**: If checked, you will only be logged from your CAS instance.
+
+* **Redirect after logout**: Only if force user login using CAS checked. Redirect to spécific url.
+
+* **Disable CAS logout**: If checked, you will only be logged out from owncloud and not from your CAS instance.
 
 **Autocreate user**: This option enables automatic creation of users authenticated against CAS. This means, users which do not exist in the database yet authenticate against CAS and the app will create and store them in the database on their first login. Default: on.
 

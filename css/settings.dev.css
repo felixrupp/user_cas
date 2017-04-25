@@ -6,7 +6,7 @@
 }
 
 #casSettings input[type="text"] {
-    width: 15em;
+    width: 20em;
     margin-left: 3px;
 }
 
@@ -18,4 +18,11 @@
 #casSettings label.checkbox {
     display: inline;
     width: auto;
+}
+#forceCAS {
+    padding-left:3em;
+}
+#forceCAS label{
+    display:inline-block;
+    width:28em;
 }

@@ -27,7 +27,6 @@
     <repository type="git">https://github.com/felixrupp/user_cas.git</repository>
 
     <dependencies>
-        <php min-version="5.5" max-version="5.9"/>
 
         <lib>curl</lib>
 

@@ -184,16 +184,16 @@ class UserHooks
 
                 $casAttributes = \phpCAS::getAttributes();
 
-                /*$casAttributesString = '';
+                $casAttributesString = '';
                 foreach ($casAttributes as $key => $attribute) {
 
                     $casAttributesString .= $key . ': ' . $attribute . '; ';
-                }*/
+                }
 
                 // parameters
                 $attributes = array();
 
-                #\OCP\Util::writeLog('cas', 'Attributes for the user: ' . $uid . ' => ' . $casAttributesString, \OCP\Util::DEBUG);
+                \OCP\Util::writeLog('cas', 'Attributes for the user: ' . $uid . ' => ' . $casAttributesString, \OCP\Util::DEBUG);
 
 
                 $displayNameMapping = $this->config->getAppValue($this->appName, 'cas_displayName_mapping');
@@ -250,16 +250,13 @@ class UserHooks
 
         if (!$this->appService->isCasInitialized()) $this->appService->init();
 
-        \OCP\Util::writeLog('cas', 'Logout hook triggered.', \OCP\Util::DEBUG);
+        if ($this->config->getAppValue($this->appName, 'cas_disable_logout') === 'false' && $this->config->getAppValue($this->appName, 'cas_force_login') === 'true' && \phpCAS::isAuthenticated()) {
 
-        if ($this->config->getAppValue($this->appName, 'cas_disable_logout') === 'false' && $this->appService->isEnforceAuthentication() && \phpCAS::isAuthenticated()) {
+            \OCP\Util::writeLog('cas', 'phpCAS logging out. url='.$this->config->getAppValue($this->appName, 'cas_redirect_after_logout'), \OCP\Util::DEBUG);
 
-            \OCP\Util::writeLog('cas', 'phpCAS logging out.', \OCP\Util::DEBUG);
-
-            \phpCAS::logout(array("url" => $this->appService->getAbsoluteURL('/')));
+            \phpCAS::logout(array("service" => $this->config->getAppValue($this->appName, 'cas_redirect_after_logout')));
 
         } else {
-
             \OCP\Util::writeLog('cas', 'phpCAS not logging out.', \OCP\Util::DEBUG);
         }
 

@@ -153,6 +153,11 @@ class AppService
     private $ecasAttributeParserEnabled;
 
     /**
+     * @var boolean
+     */
+    private $casUseProxy;
+
+    /**
      * UserService constructor.
      * @param $appName
      * @param \OCP\IConfig $config
@@ -190,6 +195,7 @@ class AppService
         $this->casPath = $this->config->getAppValue('user_cas', 'cas_server_path', '/cas');
         $this->casServiceUrl = $this->config->getAppValue('user_cas', 'cas_service_url', '');
         $this->casCertPath = $this->config->getAppValue('user_cas', 'cas_cert_path', '');
+        $this->casUseProxy = $this->config->getAppValue('user_cas', 'cas_use_proxy', '');
 
         $this->casDisableLogout = boolval($this->config->getAppValue($this->appName, 'cas_disable_logout', false));
         $logoutServersArray = explode(",", $this->config->getAppValue('user_cas', 'cas_handlelogout_servers', ''));
@@ -261,7 +267,10 @@ class AppService
 
 
                 # Initialize client
-                \phpCAS::client($this->casVersion, $this->casHostname, intval($this->casPort), $this->casPath);
+                if($this->casUseProxy)
+                    \phpCAS::proxy($this->casVersion, $this->casHostname, intval($this->casPort), $this->casPath);
+                else
+                    \phpCAS::client($this->casVersion, $this->casHostname, intval($this->casPort), $this->casPath);
 
                 # Handle logout servers
                 if (!$this->casDisableLogout && count($this->casHandleLogoutServers) > 0) {

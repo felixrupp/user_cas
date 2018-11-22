@@ -102,12 +102,13 @@ class SettingsController extends Controller
      * @param string|null $cas_update_user_data
      * @param string|null $cas_link_to_ldap_backend
      * @param string|null $cas_disable_logout
+     * @param string|null $cas_use_proxy
      * @return mixed
      */
     public function saveSettings($cas_server_version, $cas_server_hostname, $cas_server_port, $cas_server_path, $cas_protected_groups, $cas_default_group,
                                  $cas_email_mapping, $cas_displayName_mapping, $cas_group_mapping, $cas_cert_path, $cas_debug_file, $cas_php_cas_path, $cas_service_url, $cas_handlelogout_servers,
                                  $cas_access_allow_groups, $cas_ecas_accepted_strengths, $cas_ecas_retrieve_groups, $cas_ecas_assurance_level, $cas_access_group_quotas, $cas_force_login_exceptions,
-                                 $cas_ecas_attributeparserenabled = NULL, $cas_ecas_request_full_userdetails = NULL, $cas_force_login = NULL, $cas_autocreate = NULL, $cas_update_user_data = NULL, $cas_link_to_ldap_backend = NULL, $cas_disable_logout = NULL)
+                                 $cas_ecas_attributeparserenabled = NULL, $cas_ecas_request_full_userdetails = NULL, $cas_force_login = NULL, $cas_autocreate = NULL, $cas_update_user_data = NULL, $cas_link_to_ldap_backend = NULL, $cas_disable_logout = NULL, $cas_use_proxy = NULL)
     {
 
         try {
@@ -146,6 +147,7 @@ class SettingsController extends Controller
             $this->config->setAppValue($this->appName, 'cas_disable_logout', ($cas_disable_logout !== NULL) ? '1' : '0');
             $this->config->setAppValue($this->appName, 'cas_ecas_attributeparserenabled', ($cas_ecas_attributeparserenabled !== NULL) ? '1' : '0');
             $this->config->setAppValue($this->appName, 'cas_ecas_request_full_userdetails', ($cas_ecas_request_full_userdetails !== NULL) ? '1' : '0');
+            $this->config->setAppValue($this->appName, 'cas_use_proxy', ($cas_use_proxy !== NULL) ? '1' : '0');
 
 
             return array(

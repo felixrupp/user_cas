@@ -41,8 +41,19 @@ if (\OCP\App::isEnabled($c->getAppName()) && !\OC::$CLI && $enabled) {
     // Register User Backend
     $userService->registerBackend();
 
-    if (!strpos($script, "ocs") && !strpos($requestUri, "oc.js") && !in_array(basename($script), array('public.php', 'remote.php'))) {
-
+    //if (!strpos($script, "ocs") && !strpos($requestUri, "oc.js") && !in_array(basename($script), array('public.php', 'remote.php'))) {
+    if (!strpos($script, "ocs") 
+        && !strpos($requestUri, "oc.js")
+        && !strpos($requestUri, ".css")
+        && !strpos($requestUri, "/js/")
+        && !strpos($requestUri, "/theming/")
+        && !strpos($requestUri, "/svg/")
+        && !strpos($requestUri, "/publicpreview/")
+        && !strpos($requestUri, "/files_pdfviewer/")
+        && !strpos($requestUri, "/ajax/getstoragestats.php")
+        
+        && !in_array(basename($script), array('public.php', 'remote.php'))) {
+            
         // URL params and redirect_url cookie
         setcookie("user_cas_enforce_authentication", "0", null, '/');
         $urlParams = '';

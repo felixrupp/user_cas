@@ -41,7 +41,7 @@ if (\OCP\App::isEnabled($c->getAppName()) && !\OC::$CLI && $enabled) {
     // Register User Backend
     $userService->registerBackend();
 
-    if (!strpos($script, "ocs") && !strpos($requestUri, "oc.js") && !in_array(basename($script), array('public.php', 'remote.php'))) {
+    if (!strpos($script, "ocs") && !strpos($requestUri, "/onlyoffice") && !strpos($requestUri, "oc.js") && !in_array(basename($script), array('public.php', 'remote.php'))) {
 
         // URL params and redirect_url cookie
         setcookie("user_cas_enforce_authentication", "0", null, '/');

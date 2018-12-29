@@ -85,7 +85,7 @@ class Backend extends Database implements UserCasBackendInterface
      * @param string $password
      * @return string|bool The users UID or false
      */
-    public function checkPassword($uid, $password)
+    public function checkPassword(string $uid, string $password)
     {
 
         if (!$this->appService->isCasInitialized()) {

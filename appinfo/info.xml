@@ -8,7 +8,7 @@
     <screenshot>https://raw.githubusercontent.com/felixrupp/user_cas/master/.github/SCREENSHOTS/splashscreen.png</screenshot>
     <author>Felix Rupp</author>
     <namespace>UserCAS</namespace>
-    <version>1.8.2</version>
+    <version>1.8.4</version>
     <types>
         <prelogin/>
         <authentication/>

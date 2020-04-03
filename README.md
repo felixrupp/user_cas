@@ -30,7 +30,7 @@ This app does not require a standalone version of jasig’s/apereo’s phpCAS an
 3\. Basic - Release archive/Nextcloud Appstore:
 ---------------------------
 
-1. Download the current stable release from [the github releases page](https://github.com/felixrupp/user_cas/releases) according to your platform (ownCloud or Nextcloud) or use the link provided on [https://apps.nextcloud.com/apps/user_cas](apps.nextcloud.com) for Nextcloud.
+1. Download the current stable release from [the github releases page](https://github.com/felixrupp/user_cas/releases) according to your platform (ownCloud or Nextcloud) or use the link provided on [apps.nextcloud.com](https://apps.nextcloud.com/apps/user_cas) for Nextcloud.
 2. Unzip/Untar the archive.
 3. Rename the unarchived folder to `user_cas` if not already named like that.
 4. Move the `user_cas` folder to the apps folder of your platform installation.
@@ -92,13 +92,19 @@ Basic
 
 **Don’t use force login on these client-IPs**: Comma separated list of client IP addresses (or address ranges), which won’t be forced to login if "Force user login" is enabled (e.g. 192.168.1.1-254,192.168.2.5). Default: empty
 
-**Disable CAS logout**: If checked, you will only be logged out from ownCloud and not from your CAS instance. Default: off
+**Disable CAS logout**: If checked, you will only be logged out from ownCloud/Nextcloud and not from your CAS instance. Default: off
 
 **Autocreate user after first CAS login?**: If checked, users authenticated against CAS are automatically created. This means, users which did not exist in the database yet who authenticate against CAS will be created and stored in the ownCloud database on their first login. Default: on
 
 **Update user data after each CAS login?**: If checked, the data provided by CAS is used to update ownCloud user attributes each time the user logs in. Default: off
 
-**Logout Servers**: Provide a list of servers which can send logout requests for your CAS ticket (leave empty if you do not want to restrict logout to defined servers).
+**Disable CAS SingleSignout**: If checked, SingleSignout requests from your CAS server will be ignored. ownCloud/Nextcloud sessions will not be terminated because of SSO. Default: off
+
+**SingleSignout Servers**: Provide a list of servers which can send SingleSignout requests for your CAS ticket (leave empty if you do not have to restrict logout to defined servers).
+
+**Keep CAS-ticket-ids in URL?**: If checked, CAS-ticket-ids are not removed from the URL. Beware: Potential security risk! Only activate, if you know what you are doing. Default off
+
+**Overwrite Login Button Label**: Overwrites the CAS-Login button label (only used in Nextcloud). Default: empty
 
 
 <a name="mapping"></a>

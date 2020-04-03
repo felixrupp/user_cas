@@ -2,7 +2,7 @@ $(document).ready(function () {
 
     $('#user_cas #casSettings').tabs();
 
-
+    // Force Login and Disable Logout
     $("#user_cas #cas_force_login").on('change', function (event) {
 
         if ($(this).is(':checked')) {
@@ -18,7 +18,8 @@ $(document).ready(function () {
         }
     });
 
-    $("#user_cas #cas_disable_logout").on('change', function (event) {
+    // LogoutServers and Disable SSO
+    $("#user_cas #cas_disable_singlesignout").on('change', function (event) {
 
         if ($(this).is(':checked')) {
 

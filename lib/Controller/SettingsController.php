@@ -125,6 +125,7 @@ class SettingsController extends Controller
      * @param string|null $cas_update_user_data
      * @param string|null $cas_link_to_ldap_backend
      * @param string|null $cas_disable_logout
+     * @param string|null $cas_disable_singlesignout
      * @param string|null $cas_use_proxy
      * @param string|null $cas_import_merge
      * @param string|null $cas_import_merge_enabled
@@ -138,7 +139,7 @@ class SettingsController extends Controller
                                  $cas_import_ad_protocol, $cas_import_ad_host, $cas_import_ad_port, $cas_import_ad_user, $cas_import_ad_domain, $cas_import_ad_password, $cas_import_ad_base_dn, $cas_import_ad_sync_filter, $cas_import_ad_sync_pagesize,
                                  $cas_import_map_uid, $cas_import_map_displayname, $cas_import_map_email, $cas_import_map_groups, $cas_import_map_groups_description, $cas_import_map_quota, $cas_import_map_enabled, $cas_import_map_enabled_and_bitwise, $cas_import_map_dn, $cas_import_map_dn_filter,
                                  $cas_ecas_attributeparserenabled = NULL, $cas_ecas_request_full_userdetails = NULL, $cas_force_login = NULL, $cas_autocreate = NULL, $cas_update_user_data = NULL, $cas_link_to_ldap_backend = NULL,
-                                 $cas_disable_logout = NULL, $cas_use_proxy = NULL, $cas_import_merge = NULL, $cas_import_merge_enabled = NULL, $cas_groups_letter_umlauts = NULL, $cas_keep_ticket_ids = NULL)
+                                 $cas_disable_logout = NULL, $cas_disable_singlesignout = NULL, $cas_use_proxy = NULL, $cas_import_merge = NULL, $cas_import_merge_enabled = NULL, $cas_groups_letter_umlauts = NULL, $cas_keep_ticket_ids = NULL)
     {
 
         try {
@@ -210,6 +211,7 @@ class SettingsController extends Controller
             $this->config->setAppValue($this->appName, 'cas_update_user_data', ($cas_update_user_data !== NULL) ? '1' : '0');
             $this->config->setAppValue($this->appName, 'cas_link_to_ldap_backend', ($cas_link_to_ldap_backend !== NULL) ? '1' : '0');
             $this->config->setAppValue($this->appName, 'cas_disable_logout', ($cas_disable_logout !== NULL) ? '1' : '0');
+            $this->config->setAppValue($this->appName, 'cas_disable_singlesignout', ($cas_disable_singlesignout !== NULL) ? '1' : '0');
             $this->config->setAppValue($this->appName, 'cas_ecas_attributeparserenabled', ($cas_ecas_attributeparserenabled !== NULL) ? '1' : '0');
             $this->config->setAppValue($this->appName, 'cas_ecas_request_full_userdetails', ($cas_ecas_request_full_userdetails !== NULL) ? '1' : '0');
             $this->config->setAppValue($this->appName, 'cas_use_proxy', ($cas_use_proxy !== NULL) ? '1' : '0');

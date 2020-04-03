@@ -104,7 +104,7 @@ style('user_cas', 'settings');
                       name="cas_disable_logout" <?php print_unescaped((($_['cas_disable_logout'] === 'true' || $_['cas_disable_logout'] === 'on' || $_['cas_disable_logout'] === '1') ? 'checked="checked"' : ''));
                 print_unescaped((($_['cas_force_login'] === 'true' || $_['cas_force_login'] === 'on' || $_['cas_force_login'] === '1') ? 'disabled="disabled"' : '')); ?>>
                 <label class='checkbox'
-                       for="cas_disable_logout"><?php p($l->t('Disable CAS logout (do only OwnCloud logout)')); ?></label>
+                       for="cas_disable_logout"><?php p($l->t('Disable CAS logout (do not logout CAS-session, only instance-session)')); ?></label>
             </p>
             <p><input type="checkbox" id="cas_autocreate"
                       name="cas_autocreate" <?php print_unescaped((($_['cas_autocreate'] === 'true' || $_['cas_autocreate'] === 'on' || $_['cas_autocreate'] === '1' || $_['cas_autocreate'] === '') ? 'checked="checked"' : '')); ?>>
@@ -117,19 +117,26 @@ style('user_cas', 'settings');
                 <label class='checkbox'
                        for="cas_update_user_data"><?php p($l->t('Update user data after each CAS login?')); ?></label>
             </p>
+
+            <p><input type="checkbox" id="cas_disable_singlesignout"
+                      name="cas_disable_singlesignout" <?php print_unescaped((($_['cas_disable_singlesignout'] === 'true' || $_['cas_disable_singlesignout'] === 'on' || $_['cas_disable_singlesignout'] === '1') ? 'checked="checked"' : '')); ?>>
+                <label class='checkbox'
+                       for="cas_disable_singlesignout"><?php p($l->t('Disable CAS SingleSignout (do not logout instance-session if CAS-server sends SSO-Request)')); ?></label>
+            </p>
             <p>
-                <label for="cas_handlelogoutrequest_servers"><?php p($l->t('Logout Servers')); ?></label><input
+                <label for="cas_handlelogoutrequest_servers"><?php p($l->t('SingleSignout Servers')); ?></label><input
                         id="cas_handlelogout_servers"
                         name="cas_handlelogout_servers"
                         value="<?php p($_['cas_handlelogout_servers']); ?>"
-                    <?php print_unescaped((($_['cas_disable_logout'] === 'true' || $_['cas_disable_logout'] === 'on' || $_['cas_disable_logout'] === '1') ? 'disabled="disabled"' : '')); ?> />
-                <span class="csh"><?php p($l->t('Comma separated list of servers which can send logout requests (leave empty if you do not want to restrict logout to defined servers)')) ?></span>
+                    <?php print_unescaped((($_['cas_disable_singlesignout'] === 'true' || $_['cas_disable_singlesignout'] === 'on' || $_['cas_disable_singlesignout'] === '1') ? 'disabled="disabled"' : '')); ?> />
+                <span class="csh"><?php p($l->t('Comma separated list of servers which can send SingleSignout requests (leave empty if you do not have to restrict SingleSignout to defined servers)')) ?></span>
             </p>
+
             <p><input type="checkbox" id="cas_keep_ticket_ids"
                       name="cas_keep_ticket_ids" <?php print_unescaped((($_['cas_keep_ticket_ids'] === 'true' || $_['cas_keep_ticket_ids'] === 'on' || $_['cas_keep_ticket_ids'] === '1') ? 'checked="checked"' : '')); ?>>
                 <label class='checkbox'
                        for="cas_keep_ticket_ids"><?php p($l->t('Keep CAS-ticket-ids in URL?')); ?></label>
-                <span class="csh"><?php p($l->t('Beware: Potential security risk! Only activate, if you know what you are doing.')) ?></span>
+                <span class="csh">(<?php p($l->t('Beware: Potential security risk! Only activate, if you know what you are doing.')) ?>)</span>
 
             </p>
             <p>

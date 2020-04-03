@@ -118,6 +118,11 @@ class AppService
     private $casDisableLogout;
 
     /**
+     * @var boolean
+     */
+    private $casDisableSinglesignout;
+
+    /**
      * @var array
      */
     private $casHandleLogoutServers;
@@ -214,6 +219,7 @@ class AppService
 
         $this->casUseProxy = boolval($this->config->getAppValue($this->appName, 'cas_use_proxy', false));
         $this->casDisableLogout = boolval($this->config->getAppValue($this->appName, 'cas_disable_logout', false));
+        $this->casDisableSinglesignout = boolval($this->config->getAppValue($this->appName, 'cas_disable_singlesignout', false));
         $logoutServersArray = explode(",", $this->config->getAppValue($this->appName, 'cas_handlelogout_servers', ''));
         $this->casHandleLogoutServers = array();
         $this->casKeepTicketIds = boolval($this->config->getAppValue($this->appName, 'cas_keep_ticket_ids', false));
@@ -293,9 +299,10 @@ class AppService
                     \phpCAS::client($this->casVersion, $this->casHostname, intval($this->casPort), $this->casPath);
                 }
 
-                # Handle logout servers
-                if (!$this->casDisableLogout) {
+                # Handle SingleSignout requests
+                if (!$this->casDisableSinglesignout) {
 
+                    \phpCAS::setSingleSignoutCallback([$this, 'casSingleSignOut']);
                     \phpCAS::handleLogoutRequests(true, $this->casHandleLogoutServers);
                 }
 
@@ -741,275 +748,6 @@ class AppService
     }
 
     /**
-     * @return array
-     */
-    public function getCasHosts()
-    {
-
-        return explode(";", $this->casHostname);
-    }
-
-
-    ## Setters/Getters
-
-    /**
-     * @return string
-     */
-    public function getAppName()
-    {
-        return $this->appName;
-    }
-
-    /**
-     * @param string $appName
-     */
-    public function setAppName($appName)
-    {
-        $this->appName = $appName;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCasVersion()
-    {
-        return $this->casVersion;
-    }
-
-    /**
-     * @param string $casVersion
-     */
-    public function setCasVersion($casVersion)
-    {
-        $this->casVersion = $casVersion;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCasHostname()
-    {
-        return $this->casHostname;
-    }
-
-    /**
-     * @param string $casHostname
-     */
-    public function setCasHostname($casHostname)
-    {
-        $this->casHostname = $casHostname;
-    }
-
-    /**
-     * @return int
-     */
-    public function getCasPort()
-    {
-        return $this->casPort;
-    }
-
-    /**
-     * @param int $casPort
-     */
-    public function setCasPort($casPort)
-    {
-        $this->casPort = $casPort;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCasPath()
-    {
-        return $this->casPath;
-    }
-
-    /**
-     * @param string $casPath
-     */
-    public function setCasPath($casPath)
-    {
-        $this->casPath = $casPath;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCasDebugFile()
-    {
-        return $this->casDebugFile;
-    }
-
-    /**
-     * @param string $casDebugFile
-     */
-    public function setCasDebugFile($casDebugFile)
-    {
-        $this->casDebugFile = $casDebugFile;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCasCertPath()
-    {
-        return $this->casCertPath;
-    }
-
-    /**
-     * @param string $casCertPath
-     */
-    public function setCasCertPath($casCertPath)
-    {
-        $this->casCertPath = $casCertPath;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCasPhpFile()
-    {
-        return $this->casPhpFile;
-    }
-
-    /**
-     * @param string $casPhpFile
-     */
-    public function setCasPhpFile($casPhpFile)
-    {
-        $this->casPhpFile = $casPhpFile;
-    }
-
-    /**
-     * @return array
-     */
-    public function getCasHandleLogoutServers()
-    {
-        return $this->casHandleLogoutServers;
-    }
-
-    /**
-     * @param string $casHandleLogoutServers
-     */
-    public function setCasHandleLogoutServers($casHandleLogoutServers)
-    {
-        $this->casHandleLogoutServers = $casHandleLogoutServers;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCasServiceUrl()
-    {
-        return $this->casServiceUrl;
-    }
-
-    /**
-     * @param string $casServiceUrl
-     */
-    public function setCasServiceUrl($casServiceUrl)
-    {
-        $this->casServiceUrl = $casServiceUrl;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isCasDisableLogout()
-    {
-        return $this->casDisableLogout;
-    }
-
-    /**
-     * @param bool $casDisableLogout
-     */
-    public function setCasDisableLogout($casDisableLogout)
-    {
-        $this->casDisableLogout = $casDisableLogout;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCasEcasAcceptedStrengths()
-    {
-        return $this->cas_ecas_accepted_strengths;
-    }
-
-    /**
-     * @param string $cas_ecas_accepted_strengths
-     */
-    public function setCasEcasAcceptedStrengths($cas_ecas_accepted_strengths)
-    {
-        $this->cas_ecas_accepted_strengths = $cas_ecas_accepted_strengths;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCasEcasRetrieveGroups()
-    {
-        return $this->cas_ecas_retrieve_groups;
-    }
-
-    /**
-     * @param string $cas_ecas_retrieve_groups
-     */
-    public function setCasEcasRetrieveGroups($cas_ecas_retrieve_groups)
-    {
-        $this->cas_ecas_retrieve_groups = $cas_ecas_retrieve_groups;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCasEcasAssuranceLevel()
-    {
-        return $this->cas_ecas_assurance_level;
-    }
-
-    /**
-     * @param string $cas_ecas_assurance_level
-     */
-    public function setCasEcasAssuranceLevel($cas_ecas_assurance_level)
-    {
-        $this->cas_ecas_assurance_level = $cas_ecas_assurance_level;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isEcasAttributeParserEnabled()
-    {
-        return $this->ecasAttributeParserEnabled;
-    }
-
-    /**
-     * @param bool $ecasAttributeParserEnabled
-     */
-    public function setEcasAttributeParserEnabled($ecasAttributeParserEnabled)
-    {
-        $this->ecasAttributeParserEnabled = $ecasAttributeParserEnabled;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isCasEcasRequestFullUserdetails()
-    {
-        return $this->cas_ecas_request_full_userdetails;
-    }
-
-    /**
-     * @param bool $cas_ecas_request_full_userdetails
-     */
-    public function setCasEcasRequestFullUserdetails($cas_ecas_request_full_userdetails)
-    {
-        $this->cas_ecas_request_full_userdetails = $cas_ecas_request_full_userdetails;
-    }
-
-
-    /**
      * This method is used to append query parameters to an url. Since the url
      * might already contain parameter it has to be detected and to build a proper
      * URL
@@ -1145,5 +883,96 @@ class AppService
         }
 
         return FALSE;
+    }
+
+    /**
+     * Callback function for CAS singleSignOut call
+     *
+     * @author Vincent <https://github.com/pingou2712>
+     *
+     * @param string $ticket Ticket Object
+     */
+    public function casSingleSignOut($ticket)
+    {
+        // Extract the userID from the SAML Request
+        $decodedLogoutRequest = urldecode($_POST['logoutRequest']);
+        preg_match(
+            "|<saml:NameID[^>]*>(.*)</saml:NameID>|",
+            $decodedLogoutRequest, $tick, PREG_OFFSET_CAPTURE, 3
+        );
+        $wrappedSamlNameId = preg_replace(
+            '|<saml:NameID[^>]*>|', '', $tick[0][0]
+        );
+        $nameId = preg_replace(
+            '|</saml:NameID>|', '', $wrappedSamlNameId
+        );
+
+        //Kill Session Of UserID:
+        $this->killSessionUserName($nameId);
+    }
+
+    /**
+     * Kill the username's session.
+     *
+     * @author Vincent <https://github.com/pingou2712>
+     *
+     * @param string $username The username of the user.
+     * @return NULL
+     */
+    private function killSessionUserName($username)
+    {
+
+        if ($this->userManager->userExists($username)) {
+
+            $sql = "DELETE FROM oc_authtoken WHERE uid = ?;";
+            $stmt = \OC::$server->getDatabaseConnection()->prepare($sql);
+            $stmt->bindParam(1, $username, \PDO::PARAM_STR);
+            $stmt->execute();
+        }
+
+        return NULL;
+    }
+
+
+    ## Setters/Getters
+
+    /**
+     * @return string
+     */
+    public function getAppName()
+    {
+        return $this->appName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCasVersion()
+    {
+        return $this->casVersion;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCasHostname()
+    {
+        return $this->casHostname;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCasPort()
+    {
+        return $this->casPort;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCasPath()
+    {
+        return $this->casPath;
     }
 }

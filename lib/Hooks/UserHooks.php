@@ -32,6 +32,7 @@ use \OCP\IConfig;
 use OCA\UserCAS\Service\LoggingService;
 use OCA\UserCAS\Service\UserService;
 use OCA\UserCAS\Service\AppService;
+use OCA\UserCAS\Service\PhpCasTicket;
 
 /**
  * Class UserCAS_Hooks
@@ -82,6 +83,11 @@ class UserHooks
     private $loggingService;
 
     /**
+     * @var \OCA\UserCAS\Service\PhpCasTicket $phpCasTicket
+     */
+    private $phpCasTicket;
+
+    /**
      * @var UserCasBackendInterface
      */
     private $backend;
@@ -98,8 +104,9 @@ class UserHooks
      * @param \OCA\UserCAS\Service\AppService $appService
      * @param \OCA\UserCAS\Service\LoggingService $loggingService
      * @param UserCasBackendInterface $backend
+     * @param \OCA\UserCAS\Service\PhpCasTicket $phpCasTicket
      */
-    public function __construct($appName, IUserManager $userManager, IUserSession $userSession, IConfig $config, UserService $userService, AppService $appService, LoggingService $loggingService, UserCasBackendInterface $backend)
+    public function __construct($appName, IUserManager $userManager, IUserSession $userSession, IConfig $config, UserService $userService, AppService $appService, LoggingService $loggingService, UserCasBackendInterface $backend, PhpCasTicket $phpCasTicket)
     {
         $this->appName = $appName;
         $this->userManager = $userManager;
@@ -109,6 +116,7 @@ class UserHooks
         $this->appService = $appService;
         $this->loggingService = $loggingService;
         $this->backend = $backend;
+	$this->phpCasTicket = $phpCasTicket;
     }
 
     /**
@@ -118,6 +126,7 @@ class UserHooks
     {
         #$this->userSession->listen('\OC\User', 'preLogin', array($this, 'preLogin'));
         $this->userSession->listen('\OC\User', 'postLogin', array($this, 'postLogin'));
+        $this->userSession->listen('\OC\User', 'logout', array($this, 'logout'));
         $this->userSession->listen('\OC\User', 'postLogout', array($this, 'postLogout'));
     }
 
@@ -379,9 +388,19 @@ class UserHooks
      *
      * @return boolean
      */
+    public function logout()
+    {
+	// Delete token of DB (case where admin disable option SingleSignOut and logout)
+	$this->phpCasTicket->deleteTicket();
+    }
+
+    /**
+     * postLogout hook method.
+     *
+     * @return boolean
+     */
     public function postLogout()
     {
-
         if (!$this->appService->isCasInitialized()) {
 
             try {

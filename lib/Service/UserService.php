@@ -81,6 +81,11 @@ class UserService
      */
     private $loggingService;
 
+    /**
+     * @var PhpCasTicket $phpCasTicket
+     */
+    private $phpCasTicket;
+
 
     /**
      * UserService constructor.
@@ -92,8 +97,9 @@ class UserService
      * @param IGroupManager $groupManager
      * @param AppService $appService
      * @param LoggingService $loggingService
+     * @param \OCA\UserCAS\Service\PhpCasTicket $phpCasTicket
      */
-    public function __construct($appName, IConfig $config, IUserManager $userManager, IUserSession $userSession, IGroupManager $groupManager, AppService $appService, LoggingService $loggingService)
+    public function __construct($appName, IConfig $config, IUserManager $userManager, IUserSession $userSession, IGroupManager $groupManager, AppService $appService, LoggingService $loggingService, PhpCasTicket $phpCasTicket)
     {
 
         $this->appName = $appName;
@@ -103,6 +109,7 @@ class UserService
         $this->groupManager = $groupManager;
         $this->appService = $appService;
         $this->loggingService = $loggingService;
+	$this->phpCasTicket = $phpCasTicket;
     }
 
     /**
@@ -195,7 +202,10 @@ class UserService
 
             if ($loginSuccessful) {
 
-                return $this->userSession->createSessionToken($request, $this->userSession->getUser()->getUID(), $uid, NULL);
+                $result = $this->userSession->createSessionToken($request, $this->userSession->getUser()->getUID(), $uid, NULL);
+		if (!$this->appService->getCasDisableSinglesignout())
+		    $this->phpCasTicket->saveTokenTicketDb();
+		return $result;
             }
 
             $this->loggingService->write(LoggingService::DEBUG, 'phpCAS login function not successful.');

@@ -28,6 +28,7 @@ use \OCP\IContainer;
 
 use OCA\UserCAS\Service\UserService;
 use OCA\UserCAS\Service\AppService;
+use OCA\UserCAS\Service\PhpCasTicket;
 use OCA\UserCAS\Hooks\UserHooks;
 use OCA\UserCAS\Controller\SettingsController;
 use OCA\UserCAS\Controller\AuthenticationController;
@@ -97,7 +98,8 @@ class Application extends App
                 $c->query('LoggingService'),
                 $c->query('ServerContainer')->getUserManager(),
                 $c->query('ServerContainer')->getUserSession(),
-                $c->query('ServerContainer')->getURLGenerator()
+                $c->query('ServerContainer')->getURLGenerator(),
+		$c->query(PhpCasTicket::class)
             );
         });
 
@@ -145,7 +147,8 @@ class Application extends App
                 $c->query('ServerContainer')->getUserSession(),
                 $c->query('ServerContainer')->getGroupManager(),
                 $c->query('AppService'),
-                $c->query('LoggingService')
+                $c->query('LoggingService'),
+		$c->query(PhpCasTicket::class)
             );
         });
 
@@ -188,7 +191,8 @@ class Application extends App
                 $c->query('UserService'),
                 $c->query('AppService'),
                 $c->query('LoggingService'),
-                $c->query('Backend')
+                $c->query('Backend'),
+		$c->query(PhpCasTicket::class)
             );
         });
     }

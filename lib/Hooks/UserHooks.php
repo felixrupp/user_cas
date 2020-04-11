@@ -375,13 +375,12 @@ class UserHooks
     }
 
     /**
-     * Logout hook method.
+     * postLogout hook method.
      *
      * @return boolean
      */
     public function postLogout()
     {
-
         if (!$this->appService->isCasInitialized()) {
 
             try {

@@ -1,3 +1,6 @@
+> [!WARNING]  
+> This app and this repository has been abandoned. Feel free to use the sourcecode to your liking.
+
 INTRODUCTION
 ============
 
